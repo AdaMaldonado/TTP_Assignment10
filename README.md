@@ -1,4 +1,9 @@
 # TTP_Assignment10
+Group 1: Marcin Tomala, Tiego Ouedraogo, Ada Maldonado 
+## ER Diagram
+<img src="https://user-images.githubusercontent.com/34352705/150045345-3e6d7f89-ccbf-460d-8992-34e9894b9b11.png" height="800">
+
+## Assignment
 [Download](https://www.postgresql.org/download/) and install PostgreSQL on your devices (for Mac users I recommend the [app](https://postgresapp.com/))
 * Using Figma/Lucidchart, create an ER Diagram of your database
 * Create a brand new database with a specific topic (eg pizza, students, employees, etc.) with 

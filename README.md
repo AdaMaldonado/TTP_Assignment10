@@ -1,6 +1,6 @@
 # TTP_Assignment10
 Group 1: Marcin Tomala, Tiego Ouedraogo, Ada Maldonado 
-## ER Diagram
+## [ER Diagram](https://www.figma.com/file/Mq1QouhKzumrIogclpuJlA/ER-Diagram-(Community)?node-id=0%3A1)
 <img src="https://user-images.githubusercontent.com/34352705/150045345-3e6d7f89-ccbf-460d-8992-34e9894b9b11.png" height="800">
 
 ## Assignment

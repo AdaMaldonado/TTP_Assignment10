@@ -1,5 +1,13 @@
-CREATE DATABASE college;
+/* After starting psql in the shell, issuing the following commands will 
+create and appropriately populate the database 'college':*/
 
+
+/* Creating and switching to 'college' database */
+CREATE DATABASE college;
+\c college
+
+
+/* Creating each table in the 'college' database:*/
 CREATE TABLE students
 (
     student_id integer NOT NULL UNIQUE,
@@ -40,7 +48,7 @@ CREATE TABLE teaches
     course_id integer NOT NULL
 );
 
-
+/* Insertion of dummy tuples into each table: */
 INSERT INTO students(student_id, student_name, student_dob)
 VALUES 
 (1, 'John Doe', '1999-09-01'),
@@ -64,12 +72,12 @@ VALUES
 
 INSERT INTO courses(course_id, course_name, dept_id)
 VALUES 
-(1, 'American Pluralism to 1877', 3),
+(1, 'History I', 3),
 (2, 'Physics I', 4),
-(3, 'Multivariable Calculus', 2),
-(4, 'Analysis of Algorithms', 1),
+(3, 'Calculus I', 2),
+(4, 'Algorithms', 1),
 (5, 'Probability', 2),
-(6, 'Intro to Quantum Mechanics', 4);
+(6, 'Quantum Mechanics', 4);
 
 INSERT INTO attends(student_id, course_id)
 VALUES 
@@ -92,9 +100,28 @@ VALUES
 (4, 1);
 
 
+/* INNER JOIN queries joining 2, 3, and all 4 main entities, respecitvely */
 SELECT students.student_name, courses.course_name FROM students
 INNER JOIN attends ON students.student_id = attends.student_id
 INNER JOIN courses ON attends.course_id = courses.course_id;
+
+/* Output:
+
+college=# SELECT students.student_name, courses.course_name FROM students
+college-# INNER JOIN attends ON students.student_id = attends.student_id
+college-# INNER JOIN courses ON attends.course_id = courses.course_id ORDER by students.student_name asc;
+
+ student_name |        course_name
+--------------+----------------------------
+ Henry Fox    | Algorithms
+ Henry Fox    | Probability
+ Jack Smith   | Quantum Mechanics
+ Jack Smith   | Calculus I
+ Jane Doe     | Calculus I
+ Jane Doe     | Physics I
+ John Doe     | Algorithms
+ John Doe     | Physics I
+(8 rows)*/
 
 SELECT students.student_name, courses.course_name, professors.prof_name
 FROM students
@@ -103,6 +130,28 @@ INNER JOIN courses ON attends.course_id = courses.course_id
 INNER JOIN teaches ON courses.course_id = teaches.course_id
 INNER JOIN professors ON teaches.prof_id = professors.prof_id;
 
+
+/* Output: 
+
+college=# SELECT students.student_name, courses.course_name, professors.prof_name
+college-# FROM students
+college-# INNER JOIN attends ON students.student_id = attends.student_id
+college-# INNER JOIN courses ON attends.course_id = courses.course_id
+college-# INNER JOIN teaches ON courses.course_id = teaches.course_id
+college-# INNER JOIN professors ON teaches.prof_id = professors.prof_id ORDER BY students.student_name ASC;
+
+ student_name |        course_name         |     prof_name
+--------------+----------------------------+-------------------
+ Henry Fox    | Algorithms                 | Alan Turing
+ Henry Fox    | Probability                | Gottfried Leibniz
+ Jack Smith   | Quantum Mechanics          | Erwin Schrödinger
+ Jack Smith   | Calculus I                 | Gottfried Leibniz
+ Jane Doe     | Calculus I                 | Gottfried Leibniz
+ Jane Doe     | Physics I                  | Erwin Schrödinger
+ John Doe     | Algorithms                 | Alan Turing
+ John Doe     | Physics I                  | Erwin Schrödinger
+(8 rows) */
+
 SELECT students.student_name, courses.course_name, professors.prof_name, departments.dept_name
 FROM students
 INNER JOIN attends ON students.student_id = attends.student_id
@@ -110,3 +159,25 @@ INNER JOIN courses ON attends.course_id = courses.course_id
 INNER JOIN teaches ON courses.course_id = teaches.course_id
 INNER JOIN professors ON teaches.prof_id = professors.prof_id
 INNER JOIN departments ON professors.prof_dept_id = departments.dept_id;
+
+/* Output:
+
+college=# SELECT students.student_name, courses.course_name, professors.prof_name, departments.dept_name
+college-# FROM students
+college-# INNER JOIN attends ON students.student_id = attends.student_id
+college-# INNER JOIN courses ON attends.course_id = courses.course_id
+college-# INNER JOIN teaches ON courses.course_id = teaches.course_id
+college-# INNER JOIN professors ON teaches.prof_id = professors.prof_id
+college-# INNER JOIN departments ON professors.prof_dept_id = departments.dept_id ORDER BY students.student_name ASC;
+
+ student_name |        course_name         |     prof_name     |    dept_name
+--------------+----------------------------+-------------------+------------------
+ Henry Fox    | Algorithms                 | Alan Turing       | Computer Science
+ Henry Fox    | Probability                | Gottfried Leibniz | Mathematics
+ Jack Smith   | Quantum Mechanics          | Erwin Schrödinger | Physics
+ Jack Smith   | Calculus I                 | Gottfried Leibniz | Mathematics
+ Jane Doe     | Calculus I                 | Gottfried Leibniz | Mathematics
+ Jane Doe     | Physics I                  | Erwin Schrödinger | Physics
+ John Doe     | Algorithms                 | Alan Turing       | Computer Science
+ John Doe     | Physics I                  | Erwin Schrödinger | Physics
+(8 rows) */
